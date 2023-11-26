@@ -4,6 +4,7 @@
   "description": "",
   "source": "src/index.ts",
   "main": "dist/bundle.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
 	  "build": "microbundle -i src/index.ts -o dist/bundle.js --no-pkg-main -f modern",
@@ -12,9 +13,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@mediapipe/face_detection": "^0.4.1646425229",
-	  "gsap": "^3.11.3",
-    "microbundle": "^0.15.1",
-    "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "@mediapipe/tasks-vision": "*",
+	  "gsap": "*",
+    "microbundle": "*",
+    "typescript": "*"
   }
 }

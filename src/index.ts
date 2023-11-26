@@ -1,15 +1,19 @@
 // Google Media Pipe Face Detection Test using Typescript, (c) 2023 Christian Schüler, christianschueler.at
 
+import { FaceDetector, FilesetResolver } from "@mediapipe/tasks-vision"
 import { ScaleToFitWindow } from "./ScaleToFitWindow.js";
 import { gsap } from "gsap";
 
 /** @class Application */
 export class Application {
+  lastVideoTime = -1;
+  video?: HTMLVideoElement;
+  faceDetector?: FaceDetector;
 
   constructor() {
     console.log("Google Media Pipe Face Detection Test using Typescript, (c) 2023 Christian Schüler, christianschueler.at");
 
-    //new ScaleToFitWindow("#screen");
+    new ScaleToFitWindow("#screen"); 
   }
 
   async run(): Promise<void> {
@@ -37,9 +41,42 @@ export class Application {
 
     console.log("camera activated", stream);
 
-    const video = document.getElementById("video") as HTMLVideoElement;
-    console.log(video);
-    video.srcObject = stream;
+    this.video = document.getElementById("video") as HTMLVideoElement;
+    this.video.srcObject = stream;
+
+    console.log("video running", this.video);
+
+    // https://snyk.io/advisor/npm-package/@mediapipe/tasks-vision
+    const vision = await FilesetResolver.forVisionTasks(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm"
+    );
+
+    this.faceDetector = await FaceDetector.createFromModelPath(vision,
+      "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite"
+    );
+
+    console.log("mediapipe loaded");
+
+    await this.faceDetector.setOptions({ runningMode: "VIDEO" });
+
+    console.log("face detector created");
+
+    this.renderLoop();
+  }
+
+  // analyse
+  renderLoop(): void {
+  
+    if (this.video?.currentTime !== this.lastVideoTime) {
+      const d = this.faceDetector?.detectForVideo(this.video!, this.lastVideoTime);
+      //console.log(detections);
+      if (d && d.detections && d.detections.length > 0) console.log(d.detections[0].boundingBox?.originX);
+      this.lastVideoTime = this.video!.currentTime;
+    }
+
+    requestAnimationFrame(() => {
+      this.renderLoop();
+    });
   }
 }
 
