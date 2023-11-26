@@ -1,4 +1,4 @@
-# Interdimensional Cocktail Portal Frontend
+# Google Media Pipe Face Detection in the Browser with TypeScript
 
 Using microbuild, TypeScript.
 
@@ -14,6 +14,6 @@ Using microbuild, TypeScript.
 ### Installing
 
 ```
-git clone git@github.com:ChristianSchueler/interdimensional-cocktail-portal.git
+git clone git@github.com:https://github.com/ChristianSchueler/media-pipe-face-test
 ```
 
