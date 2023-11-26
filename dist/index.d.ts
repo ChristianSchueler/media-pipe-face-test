@@ -5,6 +5,6 @@ export declare class Application {
     video?: HTMLVideoElement;
     faceDetector?: FaceDetector;
     constructor();
-    run(): Promise<void>;
-    renderLoop(): void;
+    setup(): Promise<void>;
+    run(): void;
 }

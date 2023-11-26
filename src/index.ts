@@ -16,7 +16,7 @@ export class Application {
     new ScaleToFitWindow("#screen"); 
   }
 
-  async run(): Promise<void> {
+  async setup(): Promise<void> {
 
     if (!('mediaDevices' in navigator)) return;
     if (!('getUserMedia' in navigator.mediaDevices)) return;
@@ -60,12 +60,10 @@ export class Application {
     await this.faceDetector.setOptions({ runningMode: "VIDEO" });
 
     console.log("face detector created");
-
-    this.renderLoop();
   }
 
   // analyse
-  renderLoop(): void {
+  run(): void {
   
     if (this.video?.currentTime !== this.lastVideoTime) {
       const d = this.faceDetector?.detectForVideo(this.video!, this.lastVideoTime);
@@ -75,11 +73,12 @@ export class Application {
     }
 
     requestAnimationFrame(() => {
-      this.renderLoop();
+      this.run();
     });
   }
 }
 
 // go!
 const app = new Application();
-await app.run();
+await app.setup();
+app.run();
