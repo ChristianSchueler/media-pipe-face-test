@@ -1,3 +1,5 @@
+// Google Media Pipe Face Detection Test using Typescript, (c) 2023 Christian Schüler, christianschueler.at
+
 import { gsap } from "gsap";
 
 /**
